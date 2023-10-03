@@ -15,14 +15,15 @@ data = qd.get('WIKI/GOOGL')
 data = data[['Adj. Open','Adj. High','Adj. Low','Adj. Close','Adj. Volume']]
 data['HL_%C'] = (data['Adj. High'] - data['Adj. Close']) / data['Adj. Close'] * 100
 data['%C'] = (data['Adj. Close'] - data['Adj. Open']) / data['Adj. Open'] * 100
-# he uses df
+
+#               Price
 data = data[['Adj. Close', 'HL_%C','%C','Adj. Volume',]]
 
 forecast_col = 'Adj. Close'
 
 data.fillna(-99999, inplace=True)
 #regression used to predict stuff such as stock prices
-forecast_out = int(math.ceil(0.01*len(data)))
+forecast_out = int(math.ceil(0.1*len(data)))
 #this is how far out I want to predict
 print(forecast_out)
 
@@ -35,8 +36,9 @@ X = np.array(data.drop(['label'],axis = 1))
 #scale the data 
 X = preprocessing.scale(X)
 
-X = X[:-forecast_out]
 X_lately = X[-forecast_out:]
+X = X[:-forecast_out]
+
 
 data.dropna(inplace=True)
 #label
