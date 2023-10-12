@@ -23,9 +23,9 @@ forecast_col = 'Adj. Close'
 
 data.fillna(-99999, inplace=True)
 #regression used to predict stuff such as stock prices
-forecast_out = int(math.ceil(0.1*len(data)))
+forecast_out = int(math.ceil(0.01*len(data)))
 #this is how far out I want to predict
-print(forecast_out)
+#print(forecast_out)
 
 data['label'] = data[forecast_col].shift(-forecast_out)
 
@@ -44,6 +44,8 @@ data.dropna(inplace=True)
 #label
 Y = np.array(data['label'])
 
+# X_train = X[:-2 * forecast_out]
+# Y_train = Y[forecast_out:-forecast_out]
 X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X,Y, test_size = .2)
 #this is the algorithm
 #clf = svm.SVR(kernel = 'poly')
@@ -87,3 +89,11 @@ plt.legend(loc = 4)
 plt.xlabel('Date')
 plt.ylabel('Price')
 plt.show()
+
+# Create a separate plot for the forecasted data
+# plt.twinx()
+# plt.plot(data.index[-forecast_out:], forecast_set, 'g', label='Forecast')
+# plt.legend(loc=2)
+# plt.ylabel('Price (Forecast)')
+
+# plt.show()
